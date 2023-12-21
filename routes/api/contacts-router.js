@@ -2,8 +2,11 @@ import express from "express";
 import contactController from "../../controllers/contact-controller.js";
 import { isEmptyBody, isValidId } from "../../middlewares/index.js";
 import { validateBody } from "../../decorators/index.js";
-
-// import { contactAddSchema, movieUpdateSchema } from "./";
+import {
+  contactAddSchema,
+  contactUpdateSchema,
+  contactFavoriteSchema,
+} from "../../models/Contact.js";
 
 const contactsRouter = express.Router();
 
@@ -22,13 +25,22 @@ contactsRouter.post(
 );
 
 //   DELETE CONTACTS
-contactsRouter.delete("/:contactId", contactController.deleteById);
+contactsRouter.delete("/:contactId", isValidId, contactController.deleteById);
 
 //   UPDATE CONTACTS
 contactsRouter.put(
   "/:contactId",
   isEmptyBody,
-  validateBody(contactAddSchema),
+  validateBody(contactUpdateSchema),
+  contactController.updateById
+);
+
+//   EXAMINATION (TRUE OR FALSE)
+contactsRouter.patch(
+  "/:contactId/favorite",
+  isValidId,
+  isEmptyBody,
+  validateBody(contactFavoriteSchema),
   contactController.updateById
 );
 
