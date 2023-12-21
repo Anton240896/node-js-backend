@@ -5,7 +5,7 @@ import { ctrlWrapper } from "../decorators/index.js";
 //  GET CONTACTS
 const getAll = async (req, res) => {
   const result = await Contact.find();
-  res.status(201).json(result);
+  res.json(result);
 };
 
 //  GET ID CONTACTS
@@ -15,7 +15,7 @@ const getById = async (req, res) => {
   if (!result) {
     throw HttpError(404, error.message);
   }
-  res.status(201).json(result);
+  res.json(result);
 };
 
 //  ADD ID CONTACTS
@@ -31,6 +31,7 @@ const updateById = async (req, res) => {
   if (!result) {
     throw HttpError(404, error.message);
   }
+  res.json(result);
 };
 
 //  DELETE CONTACTS
@@ -40,7 +41,7 @@ const deleteById = async (req, res) => {
   if (!result) {
     throw HttpError(404, error.message);
   }
-  res.status(201).json({
+  res.json({
     message: "Delete success",
   });
 };
