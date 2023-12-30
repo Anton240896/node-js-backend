@@ -1,7 +1,14 @@
 import express from "express";
 import contactController from "../../controllers/contact-controller.js";
-import { isEmptyBody, isValidId } from "../../middlewares/index.js";
+
+import {
+  authenticate,
+  isEmptyBody,
+  isValidId,
+} from "../../middlewares/index.js";
+
 import { validateBody } from "../../decorators/index.js";
+
 import {
   contactAddSchema,
   contactUpdateSchema,
@@ -9,27 +16,40 @@ import {
 } from "../../models/Contact.js";
 
 const contactsRouter = express.Router();
+contactsRouter.use(authenticate);
 
 //   GET CONTACTS
-contactsRouter.get("/", contactController.getAll);
+contactsRouter.get("/", authenticate, contactController.getAll);
 
 //   GET ID CONTACTS
-contactsRouter.get("/:contactId", isValidId, contactController.getById);
+contactsRouter.get(
+  "/:contactId",
+  authenticate,
+  isValidId,
+  contactController.getById
+);
 
 //   ADD CONTACTS
 contactsRouter.post(
   "/",
+  authenticate,
   isEmptyBody,
   validateBody(contactAddSchema),
   contactController.addById
 );
 
 //   DELETE CONTACTS
-contactsRouter.delete("/:contactId", isValidId, contactController.deleteById);
+contactsRouter.delete(
+  "/:contactId",
+  authenticate,
+  isValidId,
+  contactController.deleteById
+);
 
 //   UPDATE CONTACTS
 contactsRouter.put(
   "/:contactId",
+  authenticate,
   isEmptyBody,
   validateBody(contactUpdateSchema),
   contactController.updateById
@@ -38,6 +58,7 @@ contactsRouter.put(
 //   EXAMINATION (TRUE OR FALSE)
 contactsRouter.patch(
   "/:contactId/favorite",
+  authenticate,
   isValidId,
   isEmptyBody,
   validateBody(contactFavoriteSchema),

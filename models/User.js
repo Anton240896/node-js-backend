@@ -7,14 +7,9 @@ import Joi from "joi";
 //       MONGOOSE SCHEMA
 const userMongooseSchema = new Schema(
   {
-    username: {
-      type: String,
-      required: [true, " Username is required"],
-    },
     password: {
       type: String,
       required: [true, "Set password for user"],
-      minLength: 6,
     },
     email: {
       type: String,
@@ -38,13 +33,11 @@ userMongooseSchema.post("findOneAndUpdate", handleSaveError);
 
 //     JOI SCHEMA
 export const signupJoiSchema = Joi.object({
-  username: Joi.string().required(),
   email: Joi.string().required(),
   password: Joi.string().min(6).required(),
 });
 
 export const signinJoiSchema = Joi.object({
-  username: Joi.string().required(),
   email: Joi.string().required(),
   password: Joi.string().min(6).required(),
 });
