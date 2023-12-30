@@ -9,14 +9,14 @@ import authController from "../../controllers/auth-controller.js";
 const authRouter = express.Router();
 
 authRouter.post(
-  "/signup",
+  "/register",
   isEmptyBody,
   validateBody(signupJoiSchema),
   authController.signup
 );
 
 authRouter.post(
-  "/signin",
+  "/login",
   isEmptyBody,
   validateBody(signinJoiSchema),
   authController.signin

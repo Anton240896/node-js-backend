@@ -8,7 +8,7 @@ const authenticate = async (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization) {
-    return next(HttpError(401, "Authorization not define"));
+    return next(HttpError(401, "Not authorized"));
   }
   const [bearer, token] = authorization.split(" ");
 
@@ -19,11 +19,11 @@ const authenticate = async (req, res, next) => {
   try {
     const { id } = jwt.verify(token, JWT_SECRET);
     const user = await User.findById(id);
-    if (!user || user) {
+    if (!user || !user.token || token !== user.token) {
       return next(HttpError(401));
     }
   } catch {
-    next(HttpError(401, error.message));
+    next(HttpError(401, "Not authorized"));
   }
 };
 
