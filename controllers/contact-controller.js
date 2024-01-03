@@ -59,7 +59,7 @@ const updateStatusById = async (req, res) => {
   }
   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
 
-  res.status(200).send(result);
+  res.status(200).json(result);
 };
 
 export default {
