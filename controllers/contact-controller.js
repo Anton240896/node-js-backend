@@ -58,10 +58,27 @@ const deleteById = async (req, res) => {
   });
 };
 
+//     UPDATE FAVORITE CONTACTS
+const updateFavoriteById = async (req, res) => {
+  const { id } = req.params;
+  const existingContact = await Contact.findByIdAndUpdate(id);
+  if (!existingContact) {
+    throw HttpError(404, error.message);
+  }
+
+  if (!req.body.favorite) {
+    return res.status(400).json({ message: "missing field favorite" });
+  }
+  const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
+
+  res.status(200).send(result);
+};
+
 export default {
   getAll: ctrlWrapper(getAll),
   getById: ctrlWrapper(getById),
   addById: ctrlWrapper(addById),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
+  updateFavoriteById: ctrlWrapper(updateFavoriteById),
 };
