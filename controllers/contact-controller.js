@@ -47,15 +47,15 @@ const deleteById = async (req, res) => {
 };
 
 //     UPDATE FAVORITE CONTACTS
-const updateFavoriteById = async (req, res) => {
-  const { id } = req.params;
-  const existingContact = await Contact.findByIdAndUpdate(id);
+const updateStatusById = async (req, res) => {
+  const { contactId } = req.params;
+  const existingContact = await Contact.findByIdAndUpdate(contactId);
   if (!existingContact) {
     throw HttpError(404, error.message);
   }
 
   if (!req.body.favorite) {
-    return res.status(400).json({ message: "missing field favorite" });
+    throw HttpError(400, error.message);
   }
   const result = await Contact.findByIdAndUpdate(id, req.body, { new: true });
 
@@ -68,5 +68,5 @@ export default {
   addById: ctrlWrapper(addById),
   updateById: ctrlWrapper(updateById),
   deleteById: ctrlWrapper(deleteById),
-  updateFavoriteById: ctrlWrapper(updateFavoriteById),
+  updateStatusById: ctrlWrapper(updateStatusById),
 };
